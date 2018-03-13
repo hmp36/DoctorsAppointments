@@ -1,0 +1,33 @@
+<form>
+  <p>Search :
+    <input type='text' name='search_text' [(ngModel)]="search_text">
+    
+  </p>
+</form>
+
+<table class="table table-hover">
+  <thead class="thead-light">
+    <tr>
+      <th>Date</th>
+      <th>Time</th>
+      <th>Patient Name</th>
+      <th>Complaint</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let appointment of display_appointments | search : search_text"> 
+                              
+      <td>{{ appointment.date | date:"MM/dd/yy" }}</td>
+      <td>{{ appointment.time | date:"h:mm a" }}</td>
+      <td>{{ appointment._username }}
+        <span *ngIf="appointment._userID == _user._id">(You)</span>
+      </td>
+      <td>{{ appointment.complaint }}</td>
+      <td>
+        <button class="btn btn-outline-secondary btn-sm" *ngIf="appointment._userID == _user._id && appointment.date > today"
+          (click)="delete(appointment._id)">Delete</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
