@@ -1,8 +1,10 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { DatePipe } from '@angular/common';
-import { Appointment } from '../../classes/appointment';
-import { AppointmentService } from '../../appointment.service';
+import { Bucketlist } from '../../classes/bucketlist';
+import { BucketlistService } from '../../bucketlist.service';
 import { Routes, Router, ActivatedRoute } from '@angular/router';
+import { SearchPipe } from '../../search.pipe';
+
 
 @Component({
   selector: 'app-homedash',
@@ -11,8 +13,8 @@ import { Routes, Router, ActivatedRoute } from '@angular/router';
 })
 export class HomedashComponent implements OnInit {
   private datePipe = new DatePipe('en-US');
-  private _appointments = [];
-  display_appointments = [];
+  private _bucketlists = [];
+  display_bucketlists = [];
   private searchfield = {
     value: ''
   };
@@ -25,27 +27,27 @@ export class HomedashComponent implements OnInit {
   private todaytime = new Date(Date.now()).getTime();
   private todaytimeonly = this.datePipe.transform(new Date(this.todaytime), 'HH:mm');
 
-  @Input() set appointments(newappointments) {
-    for (const appointment of newappointments) {
-      appointment.date = new Date(appointment.date);
+  @Input() set bucketlists(newbucketlists) {
+    for (const bucketlist of newbucketlists) {
+      bucketlist.date = new Date(bucketlist.date);
       const _localOffset = 2 * 60 * 60000;
-      const _userOffset = (appointment.date).getTimezoneOffset() * 60000;
-      appointment.date = new Date((appointment.date).getTime() + _localOffset + _userOffset);
+      const _userOffset = (bucketlist.date).getTimezoneOffset() * 60000;
+      bucketlist.date = new Date((bucketlist.date).getTime() + _localOffset + _userOffset);
     }
-    this._appointments = newappointments.filter(appointment => {
+    this._bucketlists = newbucketlists.filter(bucketlist => {
       let ok = true;
-      const appointmentdate = this.datePipe.transform(new Date(appointment.date), 'yyyy-MM-dd');
-      if (appointment.date) {
-        ok = appointment.date >= this.todayzero;
+      const bucketlistdate = this.datePipe.transform(new Date(bucketlist.date), 'yyyy-MM-dd');
+      if (bucketlist.date) {
+        ok = bucketlist.date >= this.todayzero;
       }
-      if (appointmentdate === this.todaydate) {
-        const appointmenttime = this.datePipe.transform(new Date(appointment.time), 'HH:mm');
-        ok = appointmenttime >= this.todaytimeonly;
+      if (bucketlistdate === this.todaydate) {
+        const bucketlisttime = this.datePipe.transform(new Date(bucketlist.time), 'HH:mm');
+        ok = bucketlisttime >= this.todaytimeonly;
       }
       return ok;
     });
-    this.display_appointments = this._appointments;
-    this.display_appointments.sort(function (a, b) {
+    this.display_bucketlists = this._bucketlists;
+    this.display_bucketlists.sort(function (a, b) {
       // compare dates
       if (a.date < b.date) {
         return -1;
@@ -70,30 +72,30 @@ export class HomedashComponent implements OnInit {
 
   @Output() refresh = new EventEmitter();
 
-  constructor(private _as: AppointmentService, private _router: Router) { }
+  constructor(private _as: BucketlistService, private _router: Router) { }
 
   ngOnInit() {
-    this.getAllAppointments();
+    this.getAllBucketlists();
   }
-  delete(appointmentID) {
-    this._as.delete(appointmentID)
+  delete(bucketlistID) {
+    this._as.delete(bucketlistID)
       .then(result => this.refresh.emit('update!'))
       .catch(err => console.log(err));
   }
 
   reset() {
-    this.display_appointments = this._appointments;
+    this.display_bucketlists = this._bucketlists;
     this.searched = false;
   }
-getAllAppointments() {
-  this._as.getAppointments()
-    .then(result =>  this.display_appointments );
+getAllBucketlists() {
+  this._as.getBucketlists()
+    .then(result =>  this.display_bucketlists );
 }
   search() {
     this.searched = true;
-    this.display_appointments = this._appointments.filter(appointment => {
+    this.display_bucketlists = this._bucketlists.filter(bucketlist => {
       // tslint:disable-next-line:max-line-length
-      return (appointment.complain.toLowerCase().includes(this.searchfield.value.toLowerCase()) || appointment._username.toLowerCase().includes(this.searchfield.value.toLowerCase()));
+      return (bucketlist.complain.toLowerCase().includes(this.searchfield.value.toLowerCase()) || bucketlist._username.toLowerCase().includes(this.searchfield.value.toLowerCase()));
     });
     this.searchfield = {
       value: ''

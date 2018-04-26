@@ -16,18 +16,19 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let appointment of display_appointments | search : search_text"> 
+    
+    <!-- <tr *ngFor="let bucketlist of display_bucketlists | search : search_text">  -->
                               
-      <td>{{ appointment.date | date:"MM/dd/yy" }}</td>
-      <td>{{ appointment.time | date:"h:mm a" }}</td>
-      <td>{{ appointment._username }}
-        <span *ngIf="appointment._userID == _user._id">(You)</span>
+      <td>{{ bucketlist.date | date:"MM/dd/yy" }}</td>
+      <td>{{ bucketlist.time | date:"h:mm a" }}</td>
+      <td>{{ bucketlist._username }}
+        <span *ngIf="bucketlist._userID == _user._id">(You)</span>
       </td>
-      <td>{{ appointment.complaint }}</td>
+      <td>{{ bucketlist.description }}</td>
       <td>
-        <button class="btn btn-outline-secondary btn-sm" *ngIf="appointment._userID == _user._id && appointment.date > today"
-          (click)="delete(appointment._id)">Delete</button>
+        <button class="btn btn-outline-secondary btn-sm" *ngIf="bucketlist._userID == _user._id && bucketlist.date > today"
+          (click)="delete(bucketlist._id)">Delete</button>
       </td>
-    </tr>
+    <!-- </tr> -->
   </tbody>
 </table>

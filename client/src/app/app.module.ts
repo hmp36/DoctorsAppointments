@@ -5,12 +5,11 @@ import { AppComponent } from './app.component';
 import { AddComponent } from './add/add.component';
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
-import { HomedashComponent } from './home/homedash/homedash.component';
 import { UserService } from './user.service';
-import { AppointmentService } from './appointment.service';
+import { BucketlistService } from './bucketlist.service';
 import { HttpModule } from '@angular/http';
 import { FormsModule } from '@angular/forms';
-import { SearchPipe } from './search.pipe';
+import { HomedashComponent } from './home/homedash/homedash.component';
 
 @NgModule({
   declarations: [
@@ -18,8 +17,8 @@ import { SearchPipe } from './search.pipe';
     AddComponent,
     HomeComponent,
     LoginComponent,
-    HomedashComponent,
-    SearchPipe
+    HomedashComponent
+
   ],
   imports: [
     BrowserModule,
@@ -29,7 +28,7 @@ import { SearchPipe } from './search.pipe';
   ],
   providers: [
     UserService,
-    AppointmentService
+    BucketlistService
   ],
   bootstrap: [AppComponent]
 })

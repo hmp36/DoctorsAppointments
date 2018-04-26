@@ -6,22 +6,23 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/toPromise';
 
 @Injectable()
-export class AppointmentService {
+export class BucketlistService {
 
   constructor(private _http: Http) { }
-  getAppointments() {
-    return this._http.get('/api/appointments')
+  getBucketlists() {
+    return this._http.get('/api/bucketlists')
       .map((response: Response) => response.json())
       .toPromise();
   }
-  delete(appointmentID) {
-    return this._http.delete(`/api/appointments/${appointmentID}`)
+  delete(bucketlistID) {
+    return this._http.delete(`/api/bucketlists/${bucketlistID}`)
       .map((response: Response) => response.json())
       .toPromise();
   }
-  addAppointment(appointment) {
-    return this._http.post('/api/appointments', appointment)
+  addbucketlist(bucketlist) {
+    return this._http.post('/api/bucketlists', bucketlist)
       .map((response: Response) => response.json())
       .toPromise();
   }
 }
+
